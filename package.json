@@ -1,0 +1,9 @@
+{
+  "name": "koa-climbing-app-api",
+  "version": "1.0.0",
+  "description": "An API for a climbing app",
+  "main": "index.js",
+  "repository": "https://github.com/shakahari/koa-climbing-api",
+  "author": "Jan-Sijmen Zwarts",
+  "license": "MIT"
+}
