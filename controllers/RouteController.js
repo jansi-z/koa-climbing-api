@@ -5,7 +5,7 @@ exports.getRoutes = async (ctx) => {
   if (!routes) {
     throw new Error('There was a problem fetching the routes :(');
   } else {
-    ctx.body = routes;
+    ctx.body = { routes: routes, message: 'Here you go :)' };
   }
 };
 

@@ -6,6 +6,8 @@ const logger = require('koa-logger');
 const bodyParser = require('koa-bodyparser');
 const KoaRes = require('koa-res');
 const convert = require('koa-convert');
+const Router = require('koa-better-router');
+const climbingRoute = require('./controllers/RouteController');
 
 // MongoDB config:
 
@@ -20,6 +22,14 @@ mongoose
     console.log('Error connecting to MongoDB :(');  //eslint-disable-line no-console
     console.log(error);                             //eslint-disable-line no-console
   });
+
+// Router setup:
+
+const router = Router().loadMethods();
+
+router.get('/routes', climbingRoute.getRoutes);
+
+router.post('/routes/new', climbingRoute.createRoute);
 
 // Error catcher:
 
@@ -39,9 +49,7 @@ app.use(logger());
 app.use(bodyParser());
 // Convert Response to JSON:
 app.use(convert(KoaRes()));
-
-app.use(async ctx => {
-  ctx.body = 'Hello world!';
-});
+// Use router:
+app.use(router.middleware());
 
 app.listen(3000);
