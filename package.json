@@ -5,5 +5,8 @@
   "main": "index.js",
   "repository": "https://github.com/shakahari/koa-climbing-api",
   "author": "Jan-Sijmen Zwarts",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "koa": "^2.3.0"
+  }
 }
