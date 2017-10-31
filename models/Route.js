@@ -14,4 +14,4 @@ const RouteSchema = new Schema({
   updatedAt: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model('Routes', RouteSchema);
+module.exports = mongoose.model('Route', RouteSchema);
