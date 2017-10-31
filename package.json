@@ -7,10 +7,12 @@
   "author": "Jan-Sijmen Zwarts",
   "license": "MIT",
   "dependencies": {
-    "koa": "^2.3.0"
+    "bluebird": "^3.5.1",
+    "koa": "^2.3.0",
+    "mongoose": "^4.12.5"
   },
   "scripts": {
-    "start": "node index.js"
+    "start": "nodemon --inspect index.js"
   },
   "devDependencies": {
     "eslint": "^4.10.0"
