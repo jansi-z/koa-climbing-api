@@ -2,13 +2,17 @@ const Koa = require('koa');
 const app = new Koa;
 const mongoose = require('mongoose');
 const bluebird = require('bluebird');
+const logger = require('koa-logger');
+const bodyParser = require('koa-bodyparser');
+const KoaRes = require('koa-res');
+const convert = require('koa-convert');
 
 // MongoDB config:
 
 mongoose.Promise = bluebird;
 
 mongoose
-  .connect('mongodb://localhost:27017/koa_climbing_app')
+  .connection.openUri('mongodb://localhost:27017/koa_climbing_app')
   .then(() => {
     console.log('Connected to MongoDB :)');         //eslint-disable-line no-console
   })
@@ -28,6 +32,13 @@ app.use(async (ctx, next) => {
     ctx.app.emit('error', err, ctx);
   }
 });
+
+// Logger:
+app.use(logger());
+// Bodyparser:
+app.use(bodyParser());
+// Convert Response to JSON:
+app.use(convert(KoaRes()));
 
 app.use(async ctx => {
   ctx.body = 'Hello world!';
