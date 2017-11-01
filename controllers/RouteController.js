@@ -1,7 +1,7 @@
 const Route = require('../models/Route');
 
 exports.getRoutes = async (ctx) => {
-  const routes = await Route.find({});
+  const routes = await Route.find();
   if (!routes) {
     throw new Error('There was a problem fetching the routes :(');
   } else {
@@ -27,5 +27,34 @@ exports.createRoute = async (ctx) => {
       message: 'Route created :D',
       data: result
     };
+  }
+};
+
+exports.findRoute = async (ctx) => {
+  const { id } = ctx.params;
+  const route = await Route.findById(id);
+
+  if(!route) {
+    ctx.body = {
+      error: 'Could not find the route you\'re looking for :('
+    };
+  }else{
+    ctx.body = {
+      data: route
+    };
+  }
+};
+
+exports.removeRoute = async (ctx) => {
+  const { id } = ctx.params;
+  const result = await Route.findOneAndRemove(id);
+
+  if(!result) {
+    ctx.body = {
+      error: 'Could not remove that route :('
+    };
+  }else{
+    ctx.status = 200;
+    ctx.body = result;
   }
 };
