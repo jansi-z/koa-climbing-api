@@ -1,3 +1,8 @@
+// Configures the environment variables.
+require('dotenv').config();
+// To set them yourself, create a file called '.env' in the root folder.
+// Simply define the environment variables there: MONGO_URL=/path/to/your/mongodb:etcetera
+
 const Koa = require('koa');
 const app = new Koa;
 const mongoose = require('mongoose');
@@ -13,7 +18,7 @@ const router = require('./routes');
 mongoose.Promise = bluebird;
 
 mongoose
-  .connection.openUri('mongodb://localhost:27017/koa_climbing_app')
+  .connection.openUri(process.env.MONGO_URL)
   .then(() => {
     console.log('Connected to MongoDB :)');         //eslint-disable-line no-console
   })
@@ -41,4 +46,4 @@ app.use(async (ctx, next) => {
   }
 });
 
-app.listen(3000);
+app.listen(process.env.HOST_PORT);
