@@ -6,8 +6,9 @@ const logger = require('koa-logger');
 const bodyParser = require('koa-bodyparser');
 const KoaRes = require('koa-res');
 const convert = require('koa-convert');
-const Router = require('koa-better-router');
-const climbingRoute = require('./controllers/RouteController');
+// const Router = require('koa-better-router');
+// const climbingRoute = require('./controllers/RouteController');
+const router = require('./routes');
 
 // MongoDB config:
 
@@ -23,16 +24,15 @@ mongoose
     console.log(error);                             //eslint-disable-line no-console
   });
 
-// Router setup:
-
-const router = Router().loadMethods();
-
-router.get('/routes', climbingRoute.getRoutes);
-
-router.post('/routes/new', climbingRoute.createRoute);
-
+// Logger:
+app.use(logger());
+// Bodyparser:
+app.use(bodyParser());
+// Convert Response to JSON:
+app.use(convert(KoaRes()));
+// Use router:
+app.use(router.middleware());
 // Error catcher:
-
 app.use(async (ctx, next) => {
   try {
     await next();
@@ -42,14 +42,5 @@ app.use(async (ctx, next) => {
     ctx.app.emit('error', err, ctx);
   }
 });
-
-// Logger:
-app.use(logger());
-// Bodyparser:
-app.use(bodyParser());
-// Convert Response to JSON:
-app.use(convert(KoaRes()));
-// Use router:
-app.use(router.middleware());
 
 app.listen(3000);
