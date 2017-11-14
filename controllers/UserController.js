@@ -16,7 +16,7 @@ exports.createUser = async (ctx) => {
 
     const user = await createNewUser(email, password);
 
-    ctx.body = user;
+    ctx.body = user.email;
 
   } catch(error) {
     throw new Error(error);
