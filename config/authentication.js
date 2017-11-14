@@ -1,5 +1,4 @@
 const passport = require('koa-passport');
-// const mongoose = require('mongoose');
 const passportJWT = require('passport-jwt');
 const User = require('../models/User');
 const jwtOptions = require('./jwt');
