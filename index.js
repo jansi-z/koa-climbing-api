@@ -12,7 +12,7 @@ const bodyParser = require('koa-bodyparser');
 const KoaRes = require('koa-res');
 const convert = require('koa-convert');
 const router = require('./routes');
-const passport = require('./authentication');
+const passport = require('./config/authentication');
 
 // MongoDB config:
 

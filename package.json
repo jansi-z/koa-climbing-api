@@ -9,6 +9,7 @@
   "dependencies": {
     "bluebird": "^3.5.1",
     "dotenv": "^4.0.0",
+    "jsonwebtoken": "^8.1.0",
     "koa": "^2.3.0",
     "koa-better-router": "^2.1.1",
     "koa-bodyparser": "^4.2.0",
