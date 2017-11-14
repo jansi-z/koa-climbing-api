@@ -6,16 +6,13 @@ const jwtOptions = require('./jwt');
 
 const JwtStrategy = passportJWT.Strategy;
 
-const tokenStrategy = new JwtStrategy(jwtOptions, (jwtPayload, done) => {
-  User.findById(jwtPayload.id)
-    .then((user) => {
-      if (user) {
-        done(null, user);
-      } else {
-        done(null, false);
-      }
-    })
-    .catch((err) => done(err, false));
+const tokenStrategy = new JwtStrategy(jwtOptions, async (jwtPayload, done) => {
+  try {
+    const user = await User.findById(jwtPayload.id);
+    user ? done(null, user) : done(null, false);
+  } catch(error) {
+    done(error, false);
+  }
 });
 
 passport.use(User.createStrategy());
