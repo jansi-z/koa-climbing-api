@@ -32,12 +32,12 @@ mongoose
 app.use(logger());
 // Bodyparser:
 app.use(bodyParser());
+// Use authentication:
+app.use(passport.initialize());
 // Convert Response to JSON:
 app.use(convert(KoaRes()));
 // Use router:
 app.use(router.middleware());
-// Use authentication:
-app.use(passport.initialize());
 // Error catcher:
 app.use(async (ctx, next) => {
   try {

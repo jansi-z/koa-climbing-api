@@ -1,4 +1,6 @@
 const User = require('../models/User');
+const jwt = require('jsonwebtoken');
+const jwtOptions = require('../config/jwt');
 
 // Async function for creating new user
 
@@ -10,6 +12,15 @@ function createNewUser(email, password) {
   });
 }
 
+// Async function for signing in
+
+function authenticateUser(idObject) {
+  return new Promise((resolve, reject) => {
+    const result = jwt.sign(idObject, jwtOptions.secretOrKey);
+    return result ? resolve(result) : reject({ message: 'Could not sign in for some reason :('});
+  });
+}
+
 exports.createUser = async (ctx) => {
   try {
     const { email, password } = ctx.request.body;
@@ -17,6 +28,18 @@ exports.createUser = async (ctx) => {
     const user = await createNewUser(email, password);
 
     ctx.body = user.email;
+
+  } catch(error) {
+    throw new Error(error);
+  }
+};
+
+exports.signIn = async (ctx) => {
+  try {
+    const idObject = { id: ctx.state.user._id };
+    const token = await authenticateUser(idObject);
+
+    ctx.body = token;
 
   } catch(error) {
     throw new Error(error);
