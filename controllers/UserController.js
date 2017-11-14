@@ -36,7 +36,7 @@ exports.createUser = async (ctx) => {
 
 exports.signIn = async (ctx) => {
   try {
-    const idObject = { id: ctx.state.user._id };
+    const idObject = { id: ctx.state.account._id };
     const token = await authenticateUser(idObject);
 
     ctx.body = token;

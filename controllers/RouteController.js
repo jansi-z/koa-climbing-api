@@ -10,22 +10,15 @@ exports.getRoutes = async (ctx) => {
 };
 
 exports.createRoute = async (ctx) => {
-  const { name, grade, colour, style, rope, date } = ctx.request.body;
-  const result = await Route.create({
-    name: name,
-    grade: grade,
-    colour: colour,
-    style: style,
-    rope: rope,
-    date: date,
-  });
+  const routeData = { ...ctx.request.body, author: ctx.state.account._id };
+  const result = await Route.create(routeData);
 
   if (!result) {
     throw new Error('There was a problem creating your route :(');
   } else {
     ctx.body = {
       message: 'Route created :D',
-      data: result
+      route: result
     };
   }
 };

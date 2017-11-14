@@ -10,6 +10,8 @@ const RouteSchema = new Schema({
   date: { type: Date, required: true },
   stringDate: { type: String },
 
+  author: { type: Schema.Types.ObjectId, ref: 'User' },
+
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 });
