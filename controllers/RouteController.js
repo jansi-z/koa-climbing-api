@@ -1,11 +1,11 @@
 const Route = require('../models/Route');
 
 exports.getRoutes = async (ctx) => {
-  const routes = await Route.find();
-  if (!routes) {
-    throw new Error('There was a problem fetching the routes :(');
-  } else {
-    ctx.body = { message: 'Here you go :)', routes: routes };
+  try {
+    const routes = await Route.find();
+    ctx.body = routes;
+  } catch(error) {
+    throw new Error(error);
   }
 };
 
@@ -31,17 +31,12 @@ exports.createRoute = async (ctx) => {
 };
 
 exports.findRoute = async (ctx) => {
-  const { id } = ctx.params;
-  const route = await Route.findById(id);
-
-  if(!route) {
-    ctx.body = {
-      error: 'Could not find the route you\'re looking for :('
-    };
-  }else{
-    ctx.body = {
-      data: route
-    };
+  try {
+    const { id } = ctx.params;
+    const route = await Route.findById(id);
+    ctx.body = route;
+  } catch(error) {
+    throw new Error(error);
   }
 };
 
