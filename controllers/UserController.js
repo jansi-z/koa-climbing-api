@@ -45,3 +45,12 @@ exports.signIn = async (ctx) => {
     throw new Error(error);
   }
 };
+
+exports.getCurrentUser = async (ctx) => {
+  try {
+    const user = ctx.state.account;
+    ctx.body = user;
+  } catch(error) {
+    throw new Error(error);
+  }
+};

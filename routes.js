@@ -8,6 +8,7 @@ const router = Router().loadMethods();
 // Routes for users
 
 router.post('/users', user.createUser);
+router.get('/users/me', passport.authorize('jwt', { session: false }), user.getCurrentUser);
 router.post('/sessions', passport.authenticate('local'), user.signIn);
 
 // Routes for routes
