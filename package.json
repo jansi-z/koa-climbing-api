@@ -14,8 +14,11 @@
     "koa-bodyparser": "^4.2.0",
     "koa-convert": "^1.2.0",
     "koa-logger": "^3.1.0",
+    "koa-passport": "^4.0.1",
     "koa-res": "^2.0.0",
-    "mongoose": "^4.12.5"
+    "mongoose": "^4.12.5",
+    "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^4.4.0"
   },
   "scripts": {
     "start": "nodemon --inspect index.js"
