@@ -12,6 +12,7 @@ const bodyParser = require('koa-bodyparser');
 const KoaRes = require('koa-res');
 const convert = require('koa-convert');
 const router = require('./routes');
+const passport = require('./authentication');
 
 // MongoDB config:
 
@@ -35,6 +36,8 @@ app.use(bodyParser());
 app.use(convert(KoaRes()));
 // Use router:
 app.use(router.middleware());
+// Use authentication:
+app.use(passport.initialize());
 // Error catcher:
 app.use(async (ctx, next) => {
   try {
