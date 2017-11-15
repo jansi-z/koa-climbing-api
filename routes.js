@@ -14,6 +14,6 @@ router.post('/sessions', passport.authenticate('local'), user.signIn);
 router.get('/routes', climbingRoute.getRoutes);
 router.get('/routes/:id', climbingRoute.findRoute);
 router.post('/routes', passport.authorize('jwt', { session: false }), climbingRoute.createRoute);
-router.del('/routes/:id', climbingRoute.removeRoute);
+router.del('/routes/:id', passport.authorize('jwt', { session: false }), climbingRoute.removeRoute);
 
 module.exports = router;

@@ -1,5 +1,27 @@
 const Route = require('../models/Route');
 
+function deleteRoute(routeId, userId) {
+  return new Promise((resolve, reject) => {
+    Route.findById(routeId)
+      .then((route) => {
+        if (route.author.toString() === userId.toString()) {
+          Route.findOneAndRemove(route._id)
+            .then((result) => {
+              return resolve(result);
+            })
+            .catch((error) => {
+              return reject(error);
+            });
+        } else {
+          return reject('Not authorised');
+        }
+      })
+      .catch((error) => {
+        return reject(error);
+      });
+  });
+}
+
 exports.getRoutes = async (ctx) => {
   try {
     const routes = await Route.find();
@@ -34,15 +56,12 @@ exports.findRoute = async (ctx) => {
 };
 
 exports.removeRoute = async (ctx) => {
-  const { id } = ctx.params;
-  const result = await Route.findOneAndRemove(id);
-
-  if(!result) {
-    ctx.body = {
-      error: 'Could not remove that route :('
-    };
-  }else{
-    ctx.status = 200;
+  try {
+    const routeId = ctx.params.id;
+    const userId = ctx.state.account._id;
+    const result = await deleteRoute(routeId, userId);
     ctx.body = result;
+  } catch(error) {
+    throw new Error(error);
   }
 };
