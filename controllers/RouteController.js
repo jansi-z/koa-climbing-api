@@ -50,9 +50,9 @@ exports.findRoute = async (ctx) => {
     const { id } = ctx.params;
     const route = await Route.findById(id);
 
-    route ? ctx.body = route : ctx.throw(new Error('Could not find that route'));
+    route ? ctx.body = route : ctx.throw(404, 'Oops, that route could not be found');
   } catch(error) {
-    throw new Error(error);
+    ctx.throw(404, 'Oops, that route could not be found');
   }
 };
 

@@ -28,16 +28,6 @@ mongoose
     console.log(error);                             //eslint-disable-line no-console
   });
 
-// Logger:
-app.use(logger());
-// Bodyparser:
-app.use(bodyParser());
-// Use authentication:
-app.use(passport.initialize());
-// Convert Response to JSON:
-app.use(convert(KoaRes()));
-// Use router:
-app.use(router.middleware());
 // Error catcher:
 app.use(async (ctx, next) => {
   try {
@@ -48,5 +38,15 @@ app.use(async (ctx, next) => {
     ctx.app.emit('error', err, ctx);
   }
 });
+// Logger:
+app.use(logger());
+// Bodyparser:
+app.use(bodyParser());
+// Use authentication:
+app.use(passport.initialize());
+// Convert Response to JSON:
+app.use(convert(KoaRes()));
+// Use router:
+app.use(router.middleware());
 
 app.listen(process.env.HOST_PORT);
