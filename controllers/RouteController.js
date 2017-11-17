@@ -22,6 +22,28 @@ function deleteRoute(routeId, userId) {
   });
 }
 
+function updateRoute(routeId, userId, data) {
+  return new Promise((resolve, reject) => {
+    return Route.findById(routeId)
+      .then((route) => {
+        if (route.author.toString() === userId.toString()) {
+          return Route.update({ _id: route._id }, { $set: data })
+            .then((result) => {
+              return resolve(result);
+            })
+            .catch((error) => {
+              return reject(error);
+            });
+        } else {
+          return reject(new Error('You are not the author of the route'));
+        }
+      })
+      .catch((error) => {
+        return reject(error);
+      });
+  });
+}
+
 exports.getRoutes = async (ctx) => {
   try {
     const routes = await Route.find();
@@ -48,6 +70,18 @@ exports.findRoute = async (ctx) => {
     route ? ctx.body = route : ctx.throw(404, 'Oops, that route could not be found');
   } catch(error) {
     ctx.throw(404, 'Oops, that route could not be found');
+  }
+};
+
+exports.updateRoute = async (ctx) => {
+  try {
+    const routeId = ctx.params.id;
+    const userId = ctx.state.account._id;
+    const data = ctx.request.body;
+    const result = await updateRoute(routeId, userId, data);
+    ctx.body = result;
+  } catch(error) {
+    ctx.throw(error.message);
   }
 };
 
