@@ -2,10 +2,10 @@ const Route = require('../models/Route');
 
 function deleteRoute(routeId, userId) {
   return new Promise((resolve, reject) => {
-    Route.findById(routeId)
+    return Route.findById(routeId)
       .then((route) => {
         if (route.author.toString() === userId.toString()) {
-          Route.findOneAndRemove({ _id: route._id })
+          return Route.findOneAndRemove({ _id: route._id })
             .then((result) => {
               return resolve(result);
             })
@@ -13,7 +13,7 @@ function deleteRoute(routeId, userId) {
               return reject(error);
             });
         } else {
-          return reject('Not authorised');
+          return reject(new Error('You are not the author of the route'));
         }
       })
       .catch((error) => {
@@ -27,21 +27,17 @@ exports.getRoutes = async (ctx) => {
     const routes = await Route.find();
     ctx.body = routes;
   } catch(error) {
-    throw new Error(error);
+    ctx.throw(error);
   }
 };
 
 exports.createRoute = async (ctx) => {
-  const routeData = { ...ctx.request.body, author: ctx.state.account._id };
-  const result = await Route.create(routeData);
-
-  if (!result) {
-    throw new Error('There was a problem creating your route :(');
-  } else {
-    ctx.body = {
-      message: 'Route created :D',
-      route: result
-    };
+  try {
+    const routeData = { ...ctx.request.body, author: ctx.state.account._id };
+    const newRoute = await Route.create(routeData);
+    ctx.body = newRoute;
+  } catch(error) {
+    ctx.throw(422, error.message);
   }
 };
 
@@ -49,7 +45,6 @@ exports.findRoute = async (ctx) => {
   try {
     const { id } = ctx.params;
     const route = await Route.findById(id);
-
     route ? ctx.body = route : ctx.throw(404, 'Oops, that route could not be found');
   } catch(error) {
     ctx.throw(404, 'Oops, that route could not be found');
@@ -61,7 +56,7 @@ exports.removeRoute = async (ctx) => {
     const routeId = ctx.params.id;
     const userId = ctx.state.account._id;
     const result = await deleteRoute(routeId, userId);
-    result ? ctx.body = result : ctx.throw(new Error('Could not remove that route'));
+    ctx.body = result;
   } catch(error) {
     throw new Error(error);
   }
