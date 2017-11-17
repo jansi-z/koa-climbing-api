@@ -5,7 +5,7 @@ function deleteRoute(routeId, userId) {
     Route.findById(routeId)
       .then((route) => {
         if (route.author.toString() === userId.toString()) {
-          Route.findOneAndRemove(route._id)
+          Route.findOneAndRemove({ _id: route._id })
             .then((result) => {
               return resolve(result);
             })
@@ -49,7 +49,8 @@ exports.findRoute = async (ctx) => {
   try {
     const { id } = ctx.params;
     const route = await Route.findById(id);
-    ctx.body = route;
+
+    route ? ctx.body = route : ctx.throw(new Error('Could not find that route'));
   } catch(error) {
     throw new Error(error);
   }
@@ -60,7 +61,7 @@ exports.removeRoute = async (ctx) => {
     const routeId = ctx.params.id;
     const userId = ctx.state.account._id;
     const result = await deleteRoute(routeId, userId);
-    ctx.body = result;
+    result ? ctx.body = result : ctx.throw(new Error('Could not remove that route'));
   } catch(error) {
     throw new Error(error);
   }
